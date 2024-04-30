@@ -1,0 +1,36 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../../public/images/restaurant_image.jpeg');
+    background-size: cover;
+    background-position: center;
+    color: #ffffff; /* Set text color to white */
+}
+
+.title-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 2.5rem;
+    color: #ffffff; /* Set title color to white */
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #ffffff; /* Set subtitle color to white */
+    margin-top: 10px;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
