@@ -54,7 +54,7 @@
 
         const columns = [
             {
-                title: 'Item Name',
+            title: 'Item Name',
                 dataIndex: 'item_name',
                 key: 'item_name',
                 sorter: (a, b) => a.item_name.localeCompare(b.item_name), // Enable sorting
@@ -82,12 +82,14 @@
                 title: 'Actions',
                 key: 'actions',
                 render: (text, record) => (
-                    <Button.Group>
-                        <Button type="link" onClick={() => handleEdit(record)}>Edit</Button>
-                        <Button type="link" onClick={() => showDeleteModal(record.key)}>Delete</Button>
-                    </Button.Group>
+                    <div>
+                        <Button.Group>
+                            <Button type="link" style={{ backgroundColor: '#1890ff', color: '#fff' }} onClick={() => handleEdit(record)}>Edit</Button>
+                            <Button type="link" style={{ backgroundColor: '#ff4d4f', color: '#fff' }} onClick={() => showDeleteModal(record.key)}>Delete</Button>
+                        </Button.Group>
+                    </div>
                 ),
-            },
+            }                       
         ];
 
         const onPageChange = (page, pageSize) => {
@@ -106,28 +108,11 @@
             });
         };
 
-        const handleDelete = () => {
-            fetch(`http://127.0.0.1:5000/api/menu/delete/${deleteItemId}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const updatedMenuItems = menuItems.filter(item => item.id !== deleteItemId);
-                setMenuItems(updatedMenuItems);
-                setDeleteSuccessModalVisible(true);
-            })
-            .catch(error => console.error('Error deleting menu item:', error));
-        };
-
         const showDeleteModal = (itemId) => {
             setDeleteItemId(itemId);
             setDeleteModalVisible(true);
         };
+        
 
         const handleDeleteModalOk = () => {
             handleDelete();
@@ -190,7 +175,7 @@
             })
             .then(data => {
                 const updatedMenuItems = menuItems.map(item => {
-                    if (item.id === editItem.key) {
+                    if (item.key === editItem.key) {
                         return {
                             ...item,
                             item_name: editedValues.item_name,
@@ -205,7 +190,25 @@
             })
             .catch(error => console.error('Error updating menu item:', error));
         };
-
+        
+        const handleDelete = () => {
+            fetch(`http://127.0.0.1:5000/api/menu/delete/${deleteItemId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const updatedMenuItems = menuItems.filter(item => item.key !== deleteItemId);
+                setMenuItems(updatedMenuItems);
+                setDeleteSuccessModalVisible(true);
+            })
+            .catch(error => console.error('Error deleting menu item:', error));
+        };
+        
         const handleCreateModalOk = () => {
             // Call API to add a new menu item
             fetch('http://127.0.0.1:5000/api/menu/add', {
@@ -246,6 +249,18 @@
             });
         };
 
+        const handleCreateMenuClick = () => {
+            // Reset editedValues state to empty values
+            setEditedValues({
+                item_name: '',
+                price: '',
+                description: '',
+                category: ''
+            });
+            // Open create menu dialog
+            setCreateModalVisible(true);
+        };
+
         return (    
             <div className="menu-page-container">
                 <h2>All Menu Items</h2>
@@ -274,7 +289,7 @@
                             <p>Category: <Input value={editedValues.category} onChange={(e) => handleInputChange(e, 'category')} /></p>
                         </Modal>
 
-                        <Button type="primary" size="large" onClick={() => setCreateModalVisible(true)}>
+                        <Button type="primary" size="large" onClick={() => handleCreateMenuClick()}>
                             + Create Menu
                         </Button>
                     </ConfigProvider>
@@ -297,9 +312,9 @@
                     bordered
                     className="custom-table"
                     headerClassName="custom-header"
-                    onRow={(record) => ({
-                        onClick: () => handleEdit(record),
-                    })}
+                    // onRow={(record) => ({
+                    //     onClick: () => handleEdit(record),
+                    // })}
                     loading={!menuItems.length}
                 />
 
