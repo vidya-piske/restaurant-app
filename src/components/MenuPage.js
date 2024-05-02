@@ -205,6 +205,7 @@
                 const updatedMenuItems = menuItems.filter(item => item.key !== deleteItemId);
                 setMenuItems(updatedMenuItems);
                 setDeleteSuccessModalVisible(true);
+                fetchMenuData();
             })
             .catch(error => console.error('Error deleting menu item:', error));
         };
@@ -237,7 +238,6 @@
             .catch(error => console.error('Error adding new menu item:', error));
         };
         
-        // Function to handle cancellation of creating a new menu item
         // Function to handle cancellation of creating a new menu item
         const handleCreateModalCancel = () => {
             setCreateModalVisible(false); // Close the dialog box
