@@ -187,6 +187,7 @@
                     return item;
                 });
                 setMenuItems(updatedMenuItems);
+                fetchMenuData();
             })
             .catch(error => console.error('Error updating menu item:', error));
         };
