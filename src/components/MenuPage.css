@@ -38,6 +38,13 @@
     color: #000; /* Change text color to white for better contrast */
 }
 
+.ant-table-wrapper .ant-table-column-title {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    color: black;
+}
+
 
 
 
