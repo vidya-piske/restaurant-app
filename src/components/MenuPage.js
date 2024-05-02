@@ -332,7 +332,12 @@
                     headerClassName="custom-header"
                     loading={!menuItems.length}
                     onRow={(record) => ({
-                        onClick: () => handleRowClick(record)
+                        onClick: (event) => {
+                            const isActionButtonClicked = event.target.closest('.ant-btn');
+                            if (!isActionButtonClicked) {
+                                handleRowClick(record);
+                            }
+                        }
                     })}
                 />
 
@@ -372,10 +377,10 @@
                     onCancel={handleRowModalCancel}
                     footer={null}
                 >
-                    <p>Item Name: {editedValues.item_name}</p>
-                    <p>Price: {editedValues.price}</p>
-                    <p>Description: {editedValues.description}</p>
-                    <p>Category: {editedValues.category}</p>
+                    <p>Item Name: <Input value={editedValues.item_name} readOnly onChange={(e) => handleInputChange(e, 'item_name')} /></p>
+                    <p>Price: <Input value={editedValues.price} readOnly onChange={(e) => handleInputChange(e, 'price')} /></p>
+                    <p>Description: <Input value={editedValues.description} readOnly onChange={(e) => handleInputChange(e, 'description')} /></p>
+                    <p>Category: <Input value={editedValues.category} readOnly onChange={(e) => handleInputChange(e, 'category')} /></p>
                 </Modal>
 
             </div>
