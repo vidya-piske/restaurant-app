@@ -5,6 +5,8 @@
 
     const MenuPage = () => {
         const [menuItems, setMenuItems] = useState([]);
+        const [rowModalVisible, setRowModalVisible] = useState(false);
+
         const [pagination, setPagination] = useState({
             pageSize: 4,
             current: 1,
@@ -22,6 +24,21 @@
         const [deleteSuccessModalVisible, setDeleteSuccessModalVisible] = useState(false);
         const [searchText, setSearchText] = useState('');
         const [createModalVisible, setCreateModalVisible] = useState(false);
+
+        const handleRowClick = (record) => {
+            setEditedValues({
+                item_name: record.item_name,
+                price: record.price,
+                description: record.description,
+                category: record.category
+            });
+            setRowModalVisible(true);
+        };
+        
+        const handleRowModalCancel = () => {
+            setRowModalVisible(false);
+        };
+        
 
         // gradient button styling
         const colors2 = ['#fc6076', '#ff9a44', '#ef9d43', '#e75516'];
@@ -313,10 +330,10 @@
                     bordered
                     className="custom-table"
                     headerClassName="custom-header"
-                    // onRow={(record) => ({
-                    //     onClick: () => handleEdit(record),
-                    // })}
                     loading={!menuItems.length}
+                    onRow={(record) => ({
+                        onClick: () => handleRowClick(record)
+                    })}
                 />
 
                 <Modal
@@ -348,6 +365,19 @@
                 >
                     <p>Item deleted successfully!</p>
                 </Modal>
+
+                <Modal
+                    title="Row Details"
+                    visible={rowModalVisible}
+                    onCancel={handleRowModalCancel}
+                    footer={null}
+                >
+                    <p>Item Name: {editedValues.item_name}</p>
+                    <p>Price: {editedValues.price}</p>
+                    <p>Description: {editedValues.description}</p>
+                    <p>Category: {editedValues.category}</p>
+                </Modal>
+
             </div>
         );
     };
